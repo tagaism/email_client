@@ -9,15 +9,16 @@ import { Observable } from "rxjs";
 export class UniqueUsername implements AsyncValidator{
 
   constructor(
-    private http:HttpClient
+    private http: HttpClient
   ){}
 
   validate(control: AbstractControl<any, any>): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
     const { value } = control;
 
+    console.log(value);
     return this.http.post<any>('https://api.angular-email.com/auth/username', {
       username: value
     })
-    // return { UserNameTaken: true }
+    return { UserNameTaken: true };
   }
 }
