@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { AbstractControl, AsyncValidator, ValidationErrors } from "@angular/forms";
-import { Observable } from "rxjs";
+import { AbstractControl, AsyncValidator } from "@angular/forms";
+import { catchError, map } from "rxjs/operators";
+import { of } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +13,22 @@ export class UniqueUsername implements AsyncValidator{
     private http: HttpClient
   ){}
 
-  validate(control: AbstractControl<any, any>): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
+  validate = (control: AbstractControl): any => {
     const { value } = control;
 
-    console.log(value);
-    return this.http.post<any>('https://api.angular-email.com/auth/username', {
+    return this.http.post<any>(`https://api.angular-email.com/auth/username`, {
       username: value
-    })
-    return { UserNameTaken: true };
+    }).pipe(
+      map((val) => {
+        return null;
+      }),
+      catchError((err) => {
+        if(err.error.username) {
+          return of({ nonUniqueUsername: true });
+        } else {
+          return of({ noConnection: true });
+        }
+      })
+    )
   }
 }
