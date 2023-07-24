@@ -33,5 +33,4 @@ export class SignupComponent {
     private matchPassword: MatchPassword,
     private uniqueUserName: UniqueUsername
   ) {}
-
 }
