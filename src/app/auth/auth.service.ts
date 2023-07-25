@@ -5,10 +5,21 @@ interface UniqeUsernameResponse {
   available: boolean
 }
 
+export interface SignupCredentials {
+  username: string;
+  password: string;
+  passwordConfirmation: string;
+}
+
+interface SignupResponse {
+  username: string
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  rootUrl: string = 'https://api.angular-email.com/';
 
   constructor(
     private httpClient: HttpClient
@@ -16,6 +27,11 @@ export class AuthService {
 
   ValidateUniqueUsername(username: string) {
     console.log(username)
-    return this.httpClient.post<UniqeUsernameResponse>("https://api.angular-email.com/auth/username", {username: username})
+    return this.httpClient.post<UniqeUsernameResponse>(`${this.rootUrl}auth/username`, {username: username})
+  }
+
+  signup(credentials: SignupCredentials) {
+    console.log(credentials);
+    return this.httpClient.post<SignupResponse>(`${this.rootUrl}auth/signup`, credentials);
   }
 }
