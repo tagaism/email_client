@@ -42,8 +42,17 @@ export class SignupComponent {
       return;
     }
 
-    this.authService.signup(this.authForm.value as SignupCredentials).subscribe(resp => {
-      console.log(resp);
+    this.authService.signup(this.authForm.value as SignupCredentials).subscribe({
+      next: (response) => {
+        // redirect to home page
+      },
+      error: (err) => {
+        if(!err.status) {
+          this.authForm.setErrors({ noConnection: true })
+        } else {
+          this.authForm.setErrors({ unknownError: true})
+        }
+      }
     });
   }
 }

@@ -4,13 +4,20 @@
   <app-input inputType="password" label="Password" [control]="$any(authForm).get('password')"></app-input>
   <app-input inputType="password" label="Password confirmation" [control]="$any(authForm).get('passwordConfirmation')"></app-input>
   <div 
-    *ngIf="authForm.get('password')!.touched &&
+    *ngIf="
+      authForm.get('password')!.touched &&
       authForm.get('passwordConfirmation')!.touched &&
       authForm.errors"
-    class="ui red basic label"
+    class="ui pointing red basic label"
   >
     <p *ngIf="authForm.errors?.['passwordDontMatch']">
       Password and Password confirmation must match
+    </p>
+    <p *ngIf="authForm.errors?.['noConnection']">
+      Failed to signup. Please, check your internet connection
+    </p>
+    <p *ngIf="authForm.errors?.['unknownError']">
+      Unknow error acuaried. Try again later.
     </p>
   </div>
   <div>
