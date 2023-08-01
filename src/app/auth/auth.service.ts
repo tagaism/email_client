@@ -29,17 +29,24 @@ export class AuthService {
   ) { }
 
   ValidateUniqueUsername(username: string) {
-    console.log(username)
     return this.httpClient.post<UniqeUsernameResponse>(`${this.rootUrl}auth/username`, {username: username})
   }
 
   signup(credentials: SignupCredentials) {
-    console.log(credentials);
     return this.httpClient
       .post<SignupResponse>(`${this.rootUrl}auth/signup`, credentials)
       .pipe(
         tap(() => {
           this.signedin$.next(true);
+        })
+      )
+  }
+
+  checkAuth() {
+    this.httpClient.get(`${this.rootUrl}auth/signedin`)
+      .pipe(
+        tap((response) => {
+          console.log(response);
         })
       )
   }
