@@ -4,10 +4,8 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-  HttpEventType
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { tap, filter } from 'rxjs/operators';
 
 @Injectable()
 export class AuthHttpInterceptor implements HttpInterceptor {
@@ -18,12 +16,6 @@ export class AuthHttpInterceptor implements HttpInterceptor {
     const modifiedReq = request.clone({
       withCredentials: true
     })
-    return next.handle(modifiedReq)
-      .pipe(
-        filter(val => val.type === HttpEventType.Sent),
-        tap(() => {
-          console.log('Response sent to server.')
-        })
-      );
+    return next.handle(modifiedReq);
   }
 }
