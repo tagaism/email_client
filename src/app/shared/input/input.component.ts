@@ -9,6 +9,7 @@ export class InputComponent implements OnInit{
   @Input() label: any;
   @Input() control: any;
   @Input() inputType: any;
+  @Input() controlType = 'input';
 
   constructor(){}
 
